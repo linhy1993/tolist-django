@@ -34,7 +34,6 @@ if BROWSER_HEADLESS:
 # cap = DesiredCapabilities().FIREFOX
 # cap["marionette"] = False
 
-from django.test import LiveServerTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.common.exceptions import WebDriverException
 
@@ -51,6 +50,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
             # firefox_profile=profile,
             # capabilities=cap,
             log_path=op.join(basedir, 'geckodriver.log'))
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
 
     def tearDown(self):
         self.browser.quit()
@@ -175,12 +177,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
             512,
             delta=10
         )
-
-
-
-
-
-
-
-
-
