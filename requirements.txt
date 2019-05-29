@@ -1,1 +1,2 @@
 Django==1.11.20
+STAGING_SERVER=www.superlists-staging-lhy.org:8000/ ./manage.py test functional_tests --failfast
