@@ -34,3 +34,16 @@ Assuming we have a user account at /home/username
         ├── static
         └── virtualenv
 ```
+
+eg, on AWS
+
+    sed "s/SITENAME/YOURHOST/g" source/deploy_tools/nginx.template.conf | sudo tee /etc/nginx/sites-available/YOURHOST
+
+    sudo ln -s ../sites-available/YOURHOST /etc/nginx/sites-enabled/YOURHOST
+    
+    sed "s/SITENAME/YOURHOST/g" source/deploy_tools/gunicorn-systemd.template.service | sudo tee /etc/systemd/system/gunicorn-YOURHOST.service
+    
+    sudo systemctl daemon-reload 
+    sudo systemctl reload nginx
+    sudo systemctl enable gunicorn-YOURHOST
+    sudo systemctl start gunicorn-YOURHOST
