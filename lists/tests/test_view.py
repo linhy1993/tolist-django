@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils.html import escape
 from lists.models import Item, List
+from lists.forms import ItemForm
 
 
 class ListAndItemModelsTest(TestCase):
@@ -76,7 +77,6 @@ class ListViewTest(TestCase):
         self.assertEqual(new_item.text, 'A new item for an existing list')
         self.assertEqual(new_item.list, correct_list)
 
-
     def test_POST_redirects_to_list_view(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
@@ -97,3 +97,12 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, 'list.html')
         expected_error = escape("You can't have an empty list item")
         self.assertContains(response, expected_error)
+
+
+class HomePageTest(TestCase):
+    def test_uses_home_template(self):
+        pass
+
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm)
