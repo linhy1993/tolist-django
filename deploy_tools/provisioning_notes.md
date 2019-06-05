@@ -9,8 +9,8 @@ Provisioning a new site
 
 eg, on Ubuntu
     
-    sudo add-apt repository ppa:fkrull/deadsnakes
-    sudo apt-get install nginx git python3.6 python3.6-venv
+    sudo add-apt-repository ppa:fkrull/deadsnakes
+    sudo apt-get install nginx git python3.6 python3-venv
 
 ## Nginx Virtual Host config
 
@@ -34,6 +34,9 @@ Assuming we have a user account at /home/username
         ├── static
         └── virtualenv
 ```
+on local,
+
+     fab deploy:host=ubuntu@YOURHOST
 
 eg, on AWS
 

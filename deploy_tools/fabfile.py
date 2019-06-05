@@ -4,20 +4,14 @@ import random
 
 REPO_URL = 'https://github.com/linhy1993/tolist-django.git'
 env.user = 'ubuntu'
-env.key_filename = ['/home/hng/PycharmProjects/tdd_ch1/tdd-dev.pem']
-env.hosts = ['ec2-52-15-211-39.us-east-2.compute.amazonaws.com']
+env.key_filename = ['/home/hng/PycharmProjects/tdd_ch1/django-todo-list.pem']
+env.hosts = ['ec2-35-171-27-0.compute-1.amazonaws.com']
 
-def _install_python_and_nginx():
-    run('sudo apt update'
-        '&& sudo apt install python3 python3-venv'
-        '&& sudo apt install git'
-        '&& sudo apt install nginx'
-        '&& sudo systemctl start nginx'
-        )
 
 def _create_directory_structure_if_necessary(site_folder):
     for subfolder in ('database', 'static', 'virtualenv', 'source'):
         run(f'mkdir -p {site_folder}/{subfolder}')
+
 
 def _get_latest_source(source_folder):
     if exists(source_folder + '/.git'):
@@ -25,7 +19,8 @@ def _get_latest_source(source_folder):
     else:
         run(f'git clone {REPO_URL} {source_folder}')
     current_commit = local('git log -n l --format=%H', capture=True)
-    run (f'cd {source_folder} && git reset --hard {current_commit}')
+    run(f'cd {source_folder} && git reset --hard {current_commit}')
+
 
 def _update_settings(source_folder, site_name):
     settings_path = source_folder + '/superlists/settings.py'
@@ -33,7 +28,7 @@ def _update_settings(source_folder, site_name):
     sed(settings_path,
         'ALLOWED_HOSTS = .+$',
         f'ALLOWED_HOSTS = ["{site_name}"]'
-    )
+        )
     secret_key_file = source_folder + '/superlists/secret_key.py'
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
@@ -41,17 +36,20 @@ def _update_settings(source_folder, site_name):
         append(secret_key_file, f'SECRET_KEY = "{key}"')
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
+
 def _update_virtualenv(source_folder):
     virtualenv_folder = source_folder + '/../virtualenv'
     if not exists(virtualenv_folder + '/bin/pip'):
         run(f'python3.6 -m venv {virtualenv_folder}')
     run(f'{virtualenv_folder}/bin/pip install -r {source_folder}/requirements.txt')
 
+
 def _update_static_files(source_folder):
     run(
         f'cd {source_folder}'
         ' && ../virtualenv/bin/python3.6 manage.py collectstatic --noinput'
     )
+
 
 def _update_database(source_folder):
     run(
@@ -63,7 +61,6 @@ def _update_database(source_folder):
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'
     source_folder = site_folder + '/source'
-    _install_python_and_nginx()
     _create_directory_structure_if_necessary(site_folder)
     _get_latest_source(source_folder)
     _update_settings(source_folder, env.host)
