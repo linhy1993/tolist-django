@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.urlresolvers import reverse
+from django.db import models
 
 
 # Create your models here.
@@ -19,3 +19,6 @@ class Item(models.Model):
 
     def __str__(self):
         return self.text
+
+    def get_absolute_url(self):
+        return reverse('view_list', args=[self.list.id])
