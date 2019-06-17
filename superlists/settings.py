@@ -24,7 +24,7 @@ DEBUG = True
 # TEMPLATE_DEBUG = DEBUG
 
 SECRET_KEY = 'lf(5pw@3i*xd4mg+eihaj!$0p0(rd$s8l%5*c#xa4@^ar@y^)2'
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['3.13.139.223']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # if 'DJANGO_DEBUG_FALSE' in os.environ:

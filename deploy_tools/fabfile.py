@@ -4,8 +4,8 @@ import random
 
 REPO_URL = 'https://github.com/linhy1993/tolist-django.git'
 env.user = 'ubuntu'
-env.key_filename = ''
-env.hosts = ''
+env.key_filename = '/home/hng/PycharmProjects/tdd_ch1/tdd_key.pem'
+env.hosts = '3.13.139.223'
 
 
 def _create_directory_structure_if_necessary(site_folder):
