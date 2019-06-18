@@ -24,7 +24,7 @@ DEBUG = True
 # TEMPLATE_DEBUG = DEBUG
 
 SECRET_KEY = 'lf(5pw@3i*xd4mg+eihaj!$0p0(rd$s8l%5*c#xa4@^ar@y^)2'
-ALLOWED_HOSTS = ['3.13.139.223']
+ALLOWED_HOSTS = ['*']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # if 'DJANGO_DEBUG_FALSE' in os.environ:
@@ -46,6 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lists',
+    'accounts',
+]
+
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.PasswordlessAuthenticationBackend',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +97,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -124,3 +131,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'linhongyi1110@gmail.com'
+EMAIL_HOST_PASSWORD = 'Lhy520zf'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
