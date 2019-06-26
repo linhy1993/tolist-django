@@ -36,17 +36,17 @@ Assuming we have a user account at /home/username
 ```
 on local,
 
-     fab deploy:host=ubuntu@3.13.139.223
+     fab deploy:host=ubuntu@YOURHOSTNAME
 
 eg, on AWS
 
-    sed "s/SITENAME/3.13.139.223/g" source/deploy_tools/nginx.template.conf | sudo tee /etc/nginx/sites-available/3.13.139.223
+    sed "s/SITENAME/YOURHOSTNAME/g" source/deploy_tools/nginx.template.conf | sudo tee /etc/nginx/sites-available/YOURHOSTNAME
 
-    sudo ln -s ../sites-available/3.13.139.223 /etc/nginx/sites-enabled/3.13.139.223
+    sudo ln -s ../sites-available/YOURHOSTNAME /etc/nginx/sites-enabled/YOURHOSTNAME
     
-    sed "s/SITENAME/3.13.139.223/g" source/deploy_tools/gunicorn-systemd.template.service | sudo tee /etc/systemd/system/gunicorn-3.13.139.223.service
+    sed "s/SITENAME/YOURHOSTNAME/g" source/deploy_tools/gunicorn-systemd.template.service | sudo tee /etc/systemd/system/gunicorn-YOURHOSTNAME.service
     
     sudo systemctl daemon-reload 
     sudo systemctl reload nginx
-    sudo systemctl enable gunicorn-3.13.139.223
-    sudo systemctl start gunicorn-3.13.139.223
+    sudo systemctl enable gunicorn-YOURHOSTNAME
+    sudo systemctl start gunicorn-YOURHOSTNAME

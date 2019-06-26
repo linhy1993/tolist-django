@@ -72,6 +72,5 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys('a')
         # She is pleased to see that error message disappears
         self.wait_for(lambda: self.assertFalse(
-            self.browser.find_element_by_css_selector('.has-error').is_displayed()
+            self.get_error_element().is_displayed()
         ))
-
