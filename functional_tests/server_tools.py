@@ -1,5 +1,7 @@
-from fabric.api import run
+from fabric.api import run, env
 from fabric.context_managers import settings
+
+env.key_filename = ['/home/hng/PycharmProjects/tdd_ch1/tdd_key.pem']
 
 
 def _get_manage_dot_py(host):
