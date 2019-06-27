@@ -1,8 +1,8 @@
-{% extend 'base.html' %}
+{% extends 'base.html' %}
+
+{% block list_form %}{% endblock %}
 
 {% block header_text %}My Lists{% endblock %}
-
-{% block list_form %}{% endlock %}
 
 {% block extra_content %}
     <h2>{{ owner.email }}'s lists</h2>
@@ -11,4 +11,4 @@
             <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
         {% endfor %}
     </ul>
-{% endlock %}
+{% endblock %}
