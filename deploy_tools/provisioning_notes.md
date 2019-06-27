@@ -21,6 +21,7 @@ eg, on Ubuntu
 
 * see gunicorn-systemd.template.service
 * replace SITENAME with, e.g., staging.,my-domain.com
+* replace SEKRIT with your email password
 
 ## Folder structure
 Assuming we have a user account at /home/username

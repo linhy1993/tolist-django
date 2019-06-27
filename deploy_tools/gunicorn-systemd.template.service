@@ -4,8 +4,14 @@ Description=Gunicorn server for SITENAME
 [Service]
 Restart=on-failure
 User=ubuntu
+Environment=EMAIL_PASSWORD=SEKRIT
 WorkingDirectory=/home/ubuntu/sites/SITENAME/source
-ExecStart=/home/ubuntu/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket superlists.wsgi:application
+ExecStart=/home/ubuntu/sites/SITENAME/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/SITENAME.socket \
+    --access-logfile ../access.log \
+    --error-logfile ../error.log \
+    superlists.wsgi:application
+
 
 [Install]
 WantedBy=multi-user.target
