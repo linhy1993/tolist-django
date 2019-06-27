@@ -1,9 +1,11 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import FormView, CreateView, DetailView
 
 from lists.forms import ItemForm, ExistingListItemForm
 from lists.models import List
 
+def my_lists(request, email):
+    return render(request, 'my_lists.html')
 
 class HomePageView(FormView):
     template_name = 'home.html'
