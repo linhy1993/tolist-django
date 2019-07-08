@@ -58,13 +58,7 @@ def wait(fn):
 
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
-        self.browser = webdriver.Firefox(
-            executable_path=BROWSER_FIREFOX_DRIVER,
-            firefox_binary=firefox_binary,
-            firefox_options=options,
-            # firefox_profile=profile,
-            # capabilities=cap,
-            log_path=op.join(basedir, 'geckodriver.log'))
+        self.browser = webdriver.Firefox()
         self.staging_server = os.environ.get('STAGING_SERVER')
         if self.staging_server:
             self.live_server_url = 'http://' + self.staging_server
