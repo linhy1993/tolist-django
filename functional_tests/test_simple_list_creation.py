@@ -11,26 +11,26 @@ from .base import FunctionalTest
 basedir = op.abspath(op.join(op.dirname(__file__), op.pardir, op.pardir))
 PROJECT_ROOT = op.abspath(op.join(basedir, os.pardir))
 
-BROWSER_FIREFOX_EXE = op.join(basedir, 'bin/firefox/firefox-66.0.2/firefox')
-BROWSER_FIREFOX_DRIVER = op.join(basedir, 'bin/driver/geckodriver-v0.23.0/geckodriver')
-BROWSER_HEADLESS = False
-
-firefox_binary = FirefoxBinary(BROWSER_FIREFOX_EXE)
-
-profile = webdriver.FirefoxProfile()
-# profile.DEFAULT_PREFERENCES['frozen']['javascript.enabled'] = False
-profile.set_preference("app.update.auto", False)
-profile.set_preference("app.update.enabled", False)
-# profile.set_preference("permissions.default.image", 2)
-profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', False)
-
-profile.update_preferences()
-
-options = FirefoxOptions()
-options.set_preference("dom.webnotifications.enabled", False)
-
-if BROWSER_HEADLESS:
-    options.add_argument('-headless')
+# BROWSER_FIREFOX_EXE = op.join(basedir, 'bin/firefox/firefox-66.0.2/firefox')
+# BROWSER_FIREFOX_DRIVER = op.join(basedir, 'bin/driver/geckodriver-v0.23.0/geckodriver')
+# BROWSER_HEADLESS = False
+#
+# firefox_binary = FirefoxBinary(BROWSER_FIREFOX_EXE)
+#
+# profile = webdriver.FirefoxProfile()
+# # profile.DEFAULT_PREFERENCES['frozen']['javascript.enabled'] = False
+# profile.set_preference("app.update.auto", False)
+# profile.set_preference("app.update.enabled", False)
+# # profile.set_preference("permissions.default.image", 2)
+# profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', False)
+#
+# profile.update_preferences()
+#
+# options = FirefoxOptions()
+# options.set_preference("dom.webnotifications.enabled", False)
+#
+# if BROWSER_HEADLESS:
+#     options.add_argument('-headless')
 
 # cap = DesiredCapabilities().FIREFOX
 # cap["marionette"] = False
@@ -94,13 +94,7 @@ class NewVisitorTest(FunctionalTest):
         ## We use a new browser session to make sure that not information
         ## of Edith's is coming through from cookies etc
         self.browser.quit()
-        self.browser = webdriver.Firefox(
-            executable_path=BROWSER_FIREFOX_DRIVER,
-            firefox_binary=firefox_binary,
-            firefox_options=options,
-            # firefox_profile=profile,
-            # capabilities=cap,
-            log_path=op.join(basedir, 'geckodriver.log'))
+        self.browser = webdriver.Firefox()
 
         # Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
