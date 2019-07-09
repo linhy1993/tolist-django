@@ -1,17 +1,20 @@
 import os
-# import os.path as op
+import os.path as op
 import time
+from datetime import datetime
 
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-# from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.firefox.options import Options
 
 from .server_tools import reset_database
 
+# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+# from selenium.webdriver.firefox.options import Options as FirefoxOptions
 # basedir = op.abspath(op.join(op.dirname(__file__), op.pardir, op.pardir))
 # PROJECT_ROOT = op.abspath(op.join(basedir, os.pardir))
-
 # BROWSER_FIREFOX_EXE = op.join(basedir, 'bin/firefox/firefox-66.0.2/firefox')
 # BROWSER_FIREFOX_DRIVER = op.join(basedir, 'bin/driver/geckodriver-v0.23.0/geckodriver')
 # BROWSER_HEADLESS = False
@@ -32,19 +35,15 @@ from .server_tools import reset_database
 #
 # if BROWSER_HEADLESS:
 #     options.add_argument('-headless')
-
 # cap = DesiredCapabilities().FIREFOX
 # cap["marionette"] = False
 
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.common.exceptions import WebDriverException
-
-MAX_WAIT = 10
-
-from selenium.webdriver.firefox.options import Options
-
 options = Options()
 options.headless = True
+
+MAX_WAIT = 10
+SCREEN_DUMP_LOCATION = op.join(op.dirname(op.abspath(__file__)), 'screendumps')
+
 
 def wait(fn):
     def modified_fn(*args, **kwargs):
@@ -67,8 +66,37 @@ class FunctionalTest(StaticLiveServerTestCase):
         if self.staging_server:
             self.live_server_url = 'http://' + self.staging_server
             reset_database(self.staging_server)
+
     def tearDown(self):
+        if self._test_has_failed():
+            if not op.exists(SCREEN_DUMP_LOCATION):
+                os.makedirs(SCREEN_DUMP_LOCATION)
+            for ix, handle in enumerate(self.browser.window_handles):
+                self._windowid = ix
+                self.browser.switch_to.window(handle)
+                self.take_screenshot()
+                self.dump_html()
         self.browser.quit()
+        super().tearDown()
+
+    def _test_has_failed(self):
+        # slightly obscure but could not find a better way
+        return any(error for (method, error) in self._outcome.errors)
+
+    def take_screenshot(self):
+        filename = self._get_filename() + '.png'
+        print('screenshotting to', filename)
+        self.browser.get_screenshot_as_file(filename)
+
+    def dump_html(self):
+        filename = self._get_filename() + '.html'
+        print('dumping page HTML to', filename)
+        with open(filename, 'w') as f:
+            f.write(self.browser.page_source)
+
+    def _get_filename(self):
+        timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+        return f'{SCREEN_DUMP_LOCATION}/{self.__class__.__name__}.{self._testMethodName}-window{self._windowid}-{timestamp}'
 
     @wait
     def wait_for(self, fn):
