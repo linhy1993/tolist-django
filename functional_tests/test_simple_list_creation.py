@@ -36,7 +36,10 @@ PROJECT_ROOT = op.abspath(op.join(basedir, os.pardir))
 # cap["marionette"] = False
 
 MAX_WAIT = 10
+from selenium.webdriver.firefox.options import Options
 
+options = Options()
+options.headless = True
 
 class NewVisitorTest(FunctionalTest):
 
@@ -94,7 +97,7 @@ class NewVisitorTest(FunctionalTest):
         ## We use a new browser session to make sure that not information
         ## of Edith's is coming through from cookies etc
         self.browser.quit()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Firefox(options=options)
 
         # Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
